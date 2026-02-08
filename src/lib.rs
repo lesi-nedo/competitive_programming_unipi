@@ -43,6 +43,17 @@ impl Fillable for Vec<String> {
     }
 }
 
+pub fn get_single_num<T> () -> T
+where
+    T: std::str::FromStr,
+    <T as std::str::FromStr>::Err: std::fmt::Debug,
+{
+    let mut input = String::new();
+    std::io::stdin().read_line(&mut input).unwrap();
+
+    input.trim().parse::<T>().unwrap()
+}
+
 
 pub fn get_input<T: Fillable>(mut list: T) -> T
 where
