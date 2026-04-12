@@ -1,0 +1,99 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[expansion=false]{microtype}
+\usepackage{parskip}
+\usepackage{hyperref}
+
+\hypersetup{hidelinks}
+\graphicspath{{./assets/}{reports/heads_on1/assets/}}
+
+\definecolor{UniPiBlue}{HTML}{003B5C}
+\definecolor{SoftGray}{HTML}{5F6B76}
+\definecolor{LightGray}{HTML}{D8DEE3}
+
+\begin{document}
+\pagestyle{empty}
+\sffamily
+
+\vspace*{-0.4cm}
+\noindent
+\hfill\includegraphics[width=0.24\textwidth]{marchio_unipi_pant541.png}
+
+\vspace{1.2cm}
+{\color{UniPiBlue}\rule{\textwidth}{1.3pt}\par}
+\vspace{0.9cm}
+
+{\large\bfseries University of Pisa\par}
+\vspace{0.15cm}
+{\normalsize Competitive Programming and Contests\par}
+{\normalsize Academic Year 2025--2026\par}
+
+\vspace{2.3cm}
+{\small\textbf{\textcolor{SoftGray}{HANDS-ON REPORT}}\par}
+\vspace{0.35cm}
+{\Huge\bfseries Solution to Hands-On 1\par}
+\vspace{0.5cm}
+{\large\color{SoftGray}Recursive Traversals of a Binary Tree in Rust\par}
+
+\vspace{1.6cm}
+\begin{minipage}[t]{0.64\textwidth}
+    {\color{UniPiBlue}\rule{0.9\linewidth}{4pt}\par}
+    \vspace{0.55cm}
+    \small
+    This report presents the solutions for the first hands-on assignment of
+    the course. The work focuses on recursive binary-tree traversals in Rust,
+    including binary-search-tree validation and the maximum path sum between
+    two leaves.
+\end{minipage}
+
+\vfill
+
+\noindent
+\begin{tabular}{@{}ll}
+    \textbf{Name}   & Oleksiy Nedobiychuk \\
+    \textbf{Matricola} & 597455 \\
+    \textbf{Course} & Competitive Programming and Contests \\
+    \textbf{Date}   & April 6, 2026 \\
+\end{tabular}
+
+\vspace{0.8cm}
+{\color{LightGray}\rule{\textwidth}{0.8pt}\par}
+\vspace{0.2cm}
+{\small\color{SoftGray}Department of Computer Science, University of Pisa\par}
+
+\newpage
+\section*{Introduction}
+Here, I present the solutions to the first and second heads-on exercises. The first solution (Exercise 1) uses two approaches: a recursive traversal with value boundaries and an iterative approach called Morris traversal. The second solution (Exercise 2) uses only a recursive approach, since the problem is a post-order dynamic programming problem, which requires O(H) space complexity, where H is the height of the tree. The iterative approach would require O(H) space complexity, where H is the height of the tree.
+\section*{Exercise 1: Binary Search Tree Validation}
+Firstly, I implemented a recursive approach to validate if a binary tree is a binary search tree (BST). The algorithm checks if the value of each node is within a valid range defined by its ancestors. The time complexity of this approach is O(N), where N is the number of nodes in the tree, and the space complexity is O(H), where H is the height of the tree.
+After a search for a better solution, I found the Morris traversal algorithm, which allows us to validate the BST in O(N) time and O(1) space complexity. This method modifies the tree structure temporarily to avoid using additional space for recursion or a stack.
+\section*{Exercise 2: Maximum Path Sum Between Two Leaves}
+For the second exercise, I implemented a recursive approach to find the maximum path sum between two leaves in a binary tree. The algorithm computes the maximum path sum for each node by considering the maximum path sums of its left and right subtrees. The time complexity of this approach is O(N), where N is the number of nodes in the tree, and the space complexity is O(H), where H is the height of the tree, due to the recursive call stack.
+\section*{Testing}
+To validate the implementation, I wrote a set of unit tests in Rust. The goal of the test suite is not only to check correctness on standard examples, but also to cover edge cases that are easy to get wrong in recursive tree algorithms.
+
+For the BST validation problem, the tests compare the recursive method and the Morris traversal on the same input trees. In particular, I included:
+\begin{itemize}
+    \item a single-node tree, which must always be a valid BST;
+    \item valid sparse trees and skewed trees, to check boundary conditions and unbalanced shapes;
+    \item trees with immediate violations, such as a right child smaller than its parent;
+    \item trees with deep violations, where a node is locally correct with respect to its parent but invalid with respect to an ancestor;
+    \item trees containing duplicate keys, which must be rejected by a strict BST definition;
+    \item trees using boundary values such as \texttt{0} and \texttt{u32::MAX}.
+\end{itemize}
+
+The most important property checked for Exercise 1 is that both implementations always agree: the recursive solution and the Morris solution must return the same result on every tested tree.
+
+For the maximum path sum problem, I added tests for:
+\begin{itemize}
+    \item a standard non-trivial tree with several leaves;
+    \item a single-node tree and a skewed tree, where no leaf-to-leaf path exists and the correct result is \texttt{None};
+    \item a case where the best path is entirely inside a subtree and does not pass through the root;
+    \item large key values, to verify that the implementation correctly returns a \texttt{u64} result without losing information.
+\end{itemize}
+
+Overall, the current test suite gives good coverage of both normal and corner cases, and it helped verify that the implementations behave correctly on valid inputs, invalid BSTs, degenerate trees, and numerical boundary values.
+\end{document}
