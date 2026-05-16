@@ -23,7 +23,7 @@ fn find_pick_element(nums: &[i64]) -> usize {
 fn main() {
     let mut input: Vec<i64> = Vec::new();
 
-    input = get_input(input).unwrap();
+    input = get_input(input);
 
     let res = find_pick_element(&input);
 

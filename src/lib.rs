@@ -1,43 +1,13 @@
-use std::io::{self, Read};
-
-
 pub trait Fillable {
     type Input;
 
     fn fill_me(self, item: Self::Input) -> Self;
 }
 
-impl Fillable for Vec<i64> {
-    type Input = i64;
+impl<T> Fillable for Vec<T> {
+    type Input = T;
 
-    fn fill_me(mut self, item: i64) -> Self {
-        self.push(item);
-        self
-    }
-}
-
-impl Fillable for Vec<f64> {
-    type Input = f64;
-
-    fn fill_me(mut self, item: f64) -> Self {
-        self.push(item);
-        self
-    }
-}
-
-impl Fillable for Vec<char> {
-    type Input = char;
-
-    fn fill_me(mut self, item: char) -> Self {
-        self.push(item);
-        self
-    }
-}
-
-impl Fillable for Vec<String> {
-    type Input = String;
-
-    fn fill_me(mut self, item: String) -> Self {
+    fn fill_me(mut self, item: T) -> Self {
         self.push(item);
         self
     }
@@ -79,4 +49,52 @@ where
     }
 
     list
+}
+
+pub fn get_matrix<T>() -> Vec<Vec<T>>
+where
+    T: std::str::FromStr,
+    <T as std::str::FromStr>::Err: std::fmt::Debug,
+{
+    let mut input = String::new();
+    std::io::stdin().read_line(&mut input).unwrap();
+
+    let mut matrix = Vec::new();
+    let mut row = Vec::new();
+    let mut token = String::new();
+    let mut depth = 0usize;
+
+    for ch in input.chars() {
+        match ch {
+            '[' => {
+                depth += 1;
+                if depth == 2 {
+                    row = Vec::new();
+                }
+            }
+            ']' => {
+                if depth == 2 {
+                    if !token.trim().is_empty() {
+                        row.push(token.trim().parse::<T>().unwrap());
+                        token.clear();
+                    }
+                    matrix.push(std::mem::take(&mut row));
+                }
+                depth = depth.saturating_sub(1);
+            }
+            ',' => {
+                if depth == 2 && !token.trim().is_empty() {
+                    row.push(token.trim().parse::<T>().unwrap());
+                    token.clear();
+                }
+            }
+            _ => {
+                if depth == 2 && !ch.is_whitespace() {
+                    token.push(ch);
+                }
+            }
+        }
+    }
+
+    matrix
 }

@@ -23,7 +23,7 @@ fn sub_sum_k(els: &[i32], k: i32) -> usize {
 
 fn main() {
     let mut input : Vec<i32> = Vec::new();
-    input = get_input(input).unwrap();
+    input = get_input(input);
     let k: i32 = get_single_num();
     println!("{}", sub_sum_k(&input, k));
 

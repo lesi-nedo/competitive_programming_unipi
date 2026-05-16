@@ -1,4 +1,4 @@
-use competitive_programming_unipi::get_line;
+use competitive_programming_unipi::get_single_num;
 
 fn min_partitions(n: String) -> i32 {
     let mut r: i32 = 0;
@@ -12,7 +12,7 @@ fn min_partitions(n: String) -> i32 {
 }
 
 fn main() {
-    let n = get_line().unwrap();
+    let n = get_single_num();
     let r = min_partitions(n);
     println!("{r}");
 }

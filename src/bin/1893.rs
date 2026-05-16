@@ -1,4 +1,4 @@
-use competitive_programming_unipi::{Matrix, get_input, get_single_num};
+use competitive_programming_unipi::{get_matrix, get_single_num};
 
 #[derive(PartialOrd, Ord, PartialEq, Eq, Debug)]
 enum Event {
@@ -39,10 +39,9 @@ fn is_covered(ranges: Vec<Vec<i32>>, mut left: i32, right: i32) -> bool {
 }
 
 fn main() {
-    let mut ranges: Matrix<i32> = Matrix(Vec::new());
-    ranges = get_input(ranges).unwrap();
+    let ranges = get_matrix::<i32>();
     let left: i32 = get_single_num();
     let right: i32 = get_single_num();
-    let res = is_covered(ranges.0, left, right);
+    let res = is_covered(ranges, left, right);
     println!("{res}");
 }

@@ -27,7 +27,7 @@ fn get_min(nums: &[i64]) -> i64 {
 
 fn main() {
     let mut input: Vec<i64> = Vec::new();
-    input = get_input(input).unwrap();
+    input = get_input(input);
     let res = get_min(&input);
     println!("{res}");
 }
