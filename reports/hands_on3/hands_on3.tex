@@ -1,0 +1,149 @@
+% !TEX root = hands_on3.tex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[expansion=false]{microtype}
+\usepackage{parskip}
+\usepackage{hyperref}
+
+\hypersetup{hidelinks}
+\graphicspath{{assets/}{reports/hands_on3/assets/}}
+
+\definecolor{UniPiBlue}{HTML}{003B5C}
+\definecolor{SoftGray}{HTML}{5F6B76}
+\definecolor{LightGray}{HTML}{D8DEE3}
+
+\begin{document}
+\pagestyle{empty}
+\sffamily
+
+\vspace*{-0.4cm}
+\noindent
+\hfill\includegraphics[width=0.24\textwidth]{marchio_unipi_pant541}
+
+\vspace{1.2cm}
+{\color{UniPiBlue}\rule{\textwidth}{1.3pt}\par}
+\vspace{0.9cm}
+
+{\large\bfseries University of Pisa\par}
+\vspace{0.15cm}
+{\normalsize Competitive Programming and Contests\par}
+{\normalsize Academic Year 2025--2026\par}
+
+\vspace{2.3cm}
+{\small\textbf{\textcolor{SoftGray}{HANDS-ON REPORT}}\par}
+\vspace{0.35cm}
+{\Huge\bfseries Solution to Hands-On 3\par}
+\vspace{0.5cm}
+{\large\color{SoftGray}Problem \#1: Holiday Planning\par}
+{\large\color{SoftGray}Problem \#2: Design a course\par}
+
+\vspace{1.6cm}
+\begin{minipage}[t]{0.64\textwidth}
+    {\color{UniPiBlue}\rule{0.9\linewidth}{4pt}\par}
+    \vspace{0.55cm}
+    \small
+    This report presents the solutions for the third hands-on assignment of
+    the course. Both problems are solved with dynamic programming. The first
+    problem is a two-dimensional knapsack problem, while the second problem is a
+    two-dimensional longest increasing subsequence problem.
+\end{minipage}
+
+\vfill
+
+\noindent
+\begin{tabular}{@{}ll}
+    \textbf{Name}   & Oleksiy Nedobiychuk \\
+    \textbf{Matricola} & 597455 \\
+    \textbf{Course} & Competitive Programming and Contests \\
+    \textbf{Date}   & July 13, 2026 \\
+\end{tabular}
+
+\vspace{0.8cm}
+{\color{LightGray}\rule{\textwidth}{0.8pt}\par}
+\vspace{0.2cm}
+{\small\color{SoftGray}Department of Computer Science, University of Pisa\par}
+
+\newpage
+\section*{Introduction}
+Here, I present the solutions to the two problems of Hands-On 3. Both
+problems ask for an optimal selection under constraints that grow with the
+input, and in both cases a greedy choice is not enough to guarantee
+optimality, so I solve them with dynamic programming.
+
+\section*{Exercise 1: Holiday Planning}
+The solution is implemented in \texttt{hands\_on31.rs}. The input gives
+\texttt{n} cities and \texttt{d} available days, followed by one line per
+city with the number of attractions that can be visited on each of the
+\texttt{d} days of that city's itinerary. Attractions on a given day of a
+city can only be visited if all the earlier days of that same city are also
+visited, so for a city the useful quantities are prefix sums of the daily
+attraction counts rather than the raw counts.
+
+The array \texttt{sums} stores exactly these prefix sums: \texttt{sums[c][k]}
+is the number of attractions collected by spending \texttt{k} days in city
+\texttt{c}. It is built once, in \(O(n \cdot d)\) time, before the main
+recurrence.
+
+The main table \texttt{mrs} has size \((n+1) \times (d+1)\), and
+\texttt{mrs[c][j]} is the best number of attractions obtainable using only
+the first \texttt{c} cities and a total budget of \texttt{j} days. The first
+row and the first column are zero, since zero cities or zero days give zero
+attractions. For \(c \geq 1\) and \(j \geq 1\), the recurrence tries every
+possible number of days \texttt{k} spent in city \texttt{c}, with the
+remaining \texttt{j-k} days assigned to the first \texttt{c-1} cities:
+\[
+    \texttt{mrs[c][j]} = \max_{0 \le k \le j} \; \big( \texttt{mrs[c-1][j-k]} + \texttt{sums[c][k]} \big).
+\]
+Because \texttt{mrs[c][j]} only depends on row \texttt{c-1} and on smaller
+values of \texttt{j} in row \texttt{c}, the loops are ordered with the city
+index outermost, the day budget \texttt{j} in the middle, and the split
+\texttt{k} innermost. The final answer is read directly from
+\texttt{mrs[n][d]}.
+
+Filling the \texttt{sums} table costs \(O(n \cdot d)\). The main table has
+\(O(n \cdot d)\) cells, and each cell is computed in \(O(d)\) time because of
+the innermost loop over \texttt{k}, giving a total running time of
+\(O(n \cdot d^2)\) and \(O(n \cdot d)\) memory.
+
+\section*{Exercise 2: Design a Course}
+The solution is implemented in \texttt{hands\_on32.rs}. Each topic has a
+beauty value and a difficulty value, and the goal is to select the longest
+sequence of topics for which both values increase together. Since the
+professor is free to order the lectures of the course however he likes, the
+input order of the topics does not matter, and the problem reduces to a
+two-dimensional version of the longest increasing subsequence.
+
+The topics are first sorted by beauty in ascending order, breaking ties by
+difficulty in descending order (\texttt{Reverse} on the second key). Sorting
+difficulty in the opposite direction on ties prevents two topics with equal
+beauty from both being extended into the same increasing run, since such a
+pair could never both belong to a valid course anyway. After this sort, the
+problem is exactly the one-dimensional longest increasing subsequence on the
+difficulty values, read in the new sorted order.
+
+The subsequence is computed with the usual patience-sorting technique. The
+array \texttt{d} holds, for each achieved length \texttt{l}, the smallest
+possible difficulty value that ends a selected sequence of that length;
+\texttt{d[0]} is initialized to \texttt{i32::MIN} as a sentinel. For every
+topic, in sorted order, \texttt{partition\_point} performs a binary search on
+\texttt{d} to find the position \texttt{l} where the current difficulty value
+would extend the run. The value is written into \texttt{d[l]} only when it is
+strictly greater than \texttt{d[l-1]} and strictly smaller than the value
+currently stored at \texttt{d[l]}, and \texttt{res} is updated with the
+largest length reached so far.
+
+Sorting the topics costs \(O(n \log n)\). The main loop performs one binary
+search per topic, so it also costs \(O(n \log n)\). The overall running time
+is \(O(n \log n)\), with \(O(n)\) additional memory for the \texttt{d} array.
+
+\section*{Testing}
+The implementations were validated with the provided input and output files.
+The first binary was checked against the files in
+\texttt{data/test\_handson31}. The second binary was checked against the
+files in \texttt{data/test\_handson32}. In both cases, the produced output
+was compared with the expected output using \texttt{diff}.
+\end{document}

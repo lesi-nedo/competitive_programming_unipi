@@ -7,7 +7,9 @@ struct MultiSet<T> {
 
 impl<T: Ord> MultiSet<T> {
     fn new() -> Self {
-        Self {data: BTreeMap::new()}
+        Self {
+            data: BTreeMap::new(),
+        }
     }
     fn add(&mut self, value: T) {
         *self.data.entry(value).or_insert(0) += 1;
@@ -27,32 +29,30 @@ impl<T: Ord> MultiSet<T> {
     }
 }
 
-fn max_sliding_window(arr: &[i64], k: usize) -> Vec::<i64> {
-     let mut res: Vec::<i64> = Vec::new();
-     let mut set: MultiSet<i64> = MultiSet::new();
-     for ind in 0..k {
-         set.add(arr[ind]);
-     }
-     if let Some((&val, count)) = set.get_max() {
-         res.push(val);
-     }
-     for ind in 1..arr.len() - k + 1 {
-         set.remove(&arr[ind-1]);
-         set.add(arr[k+ind-1]);
-         if let Some((&val, count)) = set.get_max() {
-             res.push(val);
-         }
-     }
-     res
+fn max_sliding_window(arr: &[i64], k: usize) -> Vec<i64> {
+    let mut res: Vec<i64> = Vec::new();
+    let mut set: MultiSet<i64> = MultiSet::new();
+    for &elem in arr.iter().take(k) {
+        set.add(elem);
+    }
+    if let Some((&val, _)) = set.get_max() {
+        res.push(val);
+    }
+    for ind in 1..arr.len() - k + 1 {
+        set.remove(&arr[ind - 1]);
+        set.add(arr[k + ind - 1]);
+        if let Some((&val, _)) = set.get_max() {
+            res.push(val);
+        }
+    }
+    res
 }
 
-fn main () {
+fn main() {
+    let mut input: Vec<i64> = Vec::new();
 
-     let mut input: Vec<i64> = Vec::new();
-
-     input = get_input(input);
-     let k = get_single_num::<usize>();
-     let res: Vec<i64> = max_sliding_window(&input, k);
-     println!("{:?}", res);
-
+    input = get_input(input);
+    let k = get_single_num::<usize>();
+    let res: Vec<i64> = max_sliding_window(&input, k);
+    println!("{:?}", res);
 }

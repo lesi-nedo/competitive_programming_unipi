@@ -1,22 +1,10 @@
 #!/usr/bin/env bash
 
-ROOT=".."
-TEST_FOLDER="test_headson22"
-TEST_PATH="${ROOT}/data/${TEST_FOLDER}"
-RUST_EXEC="heads_on22"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+source  "${SCRIPT_DIR}/rust_test.sh"
 
-if [ ! -e "${TEST_PATH}" ]; then
-  echo "THIS: ${TEST_PATH} does not exists. Fix it."
-fi
+TEST_FOLDER="test_handson22"
+RUST_EXEC="hands_on22"
 
-cargo build --release --bin "${RUST_EXEC}"
-
-for i in "${TEST_PATH}"/input*.txt; do
-  n=${i#"${TEST_PATH}"/input}
-  n=${n%.txt}
-
-  diff -u \
-    <("$ROOT"/target/release/"${RUST_EXEC}" < "$i") \
-    "${TEST_PATH}/output${n}.txt"
-done
+run_test "$TEST_FOLDER" "$RUST_EXEC"

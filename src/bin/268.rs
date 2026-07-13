@@ -1,8 +1,7 @@
 use competitive_programming_unipi::get_input;
 
 fn missing_number(arr: Vec<i64>) -> usize {
-
-    let mut cont: Box<[i64]> = vec![0; arr.len()+1].into_boxed_slice();
+    let mut cont: Box<[i64]> = vec![0; arr.len() + 1].into_boxed_slice();
     for el in arr {
         cont[el as usize] = 1;
     }
@@ -14,9 +13,7 @@ fn missing_number(arr: Vec<i64>) -> usize {
         }
     }
 
-
     res
-
 }
 
 fn main() {
@@ -25,5 +22,4 @@ fn main() {
     input = get_input(input);
 
     println!("{:?}", missing_number(input));
-
 }

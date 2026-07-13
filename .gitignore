@@ -11,3 +11,12 @@
 *.log
 *.out
 *.gz
+*.bbl
+*.blg
+*.brf
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.lof
+*.lot

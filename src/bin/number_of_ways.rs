@@ -7,15 +7,17 @@ fn n_ways(els: &[i64]) -> usize {
         return res;
     }
 
-    let sums = els.iter().scan(0, |sum, e|
-        {
+    let sums = els
+        .iter()
+        .scan(0, |sum, e| {
             *sum += e;
             Some(*sum)
-        }).collect::<Vec<_>>();
+        })
+        .collect::<Vec<_>>();
     let fin = els_n - 1;
     let scn = els_n;
     for i in 0..fin {
-        for j in i+1..scn {
+        for j in i + 1..scn {
             let fir = sums[i];
             let scr = sums[j] - fir;
             let thr = sums[els_n] - sums[j];

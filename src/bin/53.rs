@@ -13,7 +13,6 @@ fn max_sub_array(arr: &[i64]) -> i64 {
         }
     }
     max
-
 }
 
 fn main() {

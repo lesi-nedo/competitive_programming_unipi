@@ -8,7 +8,7 @@
 \usepackage{hyperref}
 
 \hypersetup{hidelinks}
-\graphicspath{{./assets/}{reports/heads_on1/assets/}}
+\graphicspath{{./assets/}{reports/hands_on1/assets/}}
 
 \definecolor{UniPiBlue}{HTML}{003B5C}
 \definecolor{SoftGray}{HTML}{5F6B76}
@@ -56,7 +56,7 @@
     \textbf{Name}   & Oleksiy Nedobiychuk \\
     \textbf{Matricola} & 597455 \\
     \textbf{Course} & Competitive Programming and Contests \\
-    \textbf{Date}   & April 6, 2026 \\
+    \textbf{Date}   & July 13, 2026 \\
 \end{tabular}
 
 \vspace{0.8cm}
@@ -66,7 +66,7 @@
 
 \newpage
 \section*{Introduction}
-Here, I present the solutions to the first and second heads-on exercises. The first solution (Exercise 1) uses two approaches: a recursive traversal with value boundaries and an iterative approach called Morris traversal. The second solution (Exercise 2) uses only a recursive approach, since the problem is a post-order dynamic programming problem, which requires O(H) space complexity, where H is the height of the tree. The iterative approach would require O(H) space complexity, where H is the height of the tree.
+Here, I present the solutions to the first and second hands-on exercises. The first solution (Exercise 1) uses two approaches: a recursive traversal with value boundaries and an iterative approach called Morris traversal. The second solution (Exercise 2) uses only a recursive approach, since the problem is a post-order dynamic programming problem, which requires O(H) space complexity, where H is the height of the tree. The iterative approach would require O(H) space complexity, where H is the height of the tree.
 \section*{Exercise 1: Binary Search Tree Validation}
 Firstly, I implemented a recursive approach to validate if a binary tree is a binary search tree (BST). The algorithm checks if the value of each node is within a valid range defined by its ancestors. The time complexity of this approach is O(N), where N is the number of nodes in the tree, and the space complexity is O(H), where H is the height of the tree.
 After a search for a better solution, I found the Morris traversal algorithm, which allows us to validate the BST in O(N) time and O(1) space complexity. This method modifies the tree structure temporarily to avoid using additional space for recursion or a stack.

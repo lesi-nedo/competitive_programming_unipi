@@ -13,7 +13,7 @@ impl<T> Fillable for Vec<T> {
     }
 }
 
-pub fn get_single_num<T> () -> T
+pub fn get_single_num<T>() -> T
 where
     T: std::str::FromStr,
     <T as std::str::FromStr>::Err: std::fmt::Debug,
@@ -24,7 +24,6 @@ where
     input.trim().parse::<T>().unwrap()
 }
 
-
 pub fn get_input<T: Fillable>(mut list: T) -> T
 where
     T::Input: std::str::FromStr,
@@ -34,9 +33,7 @@ where
     std::io::stdin().read_line(&mut input).unwrap();
 
     // Step 1: Replace common delimiters with spaces to make split_whitespace work
-    let standardized = input.replace('[', " ")
-        .replace(']', " ")
-        .replace(',', " ");
+    let standardized = input.replace(['[', ']', ','], " ");
 
     // Step 2: Now split_whitespace() will find "1", "2", "3", "4" individually
     let it = standardized.split_whitespace();

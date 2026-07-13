@@ -56,32 +56,6 @@ impl STree {
         }
     }
 
-    // pub fn print(&self) {
-    //     self.print_rec(1, 0, self.n - 1, 0);
-    // }
-    //
-    // fn print_rec(&self, node: usize, l: usize, r: usize, depth: usize) {
-    //     // indentation proportional to depth
-    //     let indent = "  ".repeat(depth);
-    //
-    //     println!(
-    //         "{}[node {}] range=({}, {}) val={}",
-    //         indent,
-    //         node,
-    //         l,
-    //         r,
-    //         self.tree[node]
-    //     );
-    //
-    //     if l == r {
-    //         return;
-    //     }
-    //
-    //     let mid = (l + r) / 2;
-    //     self.print_rec(self.left(node), l, mid, depth + 1);
-    //     self.print_rec(self.right(node), mid + 1, r, depth + 1);
-    // }
-
     fn update(&mut self, node: usize, l: usize, r: usize, idx: usize, val: i64) {
         if l == r {
             self.tree[node] = val;
