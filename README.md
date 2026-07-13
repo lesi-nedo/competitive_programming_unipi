@@ -13,7 +13,7 @@ This repository contains the exercises, solutions, and reports for the competiti
 
 ## Where to find the solutions
 
-The solutions are inside the `cpp/` and `src/` folders, depending on the language used for each exercise. Each file is named after the problem, so it is easy to match the code with the corresponding assignment.
+The solutions are inside the `cpp/` and `src/` folders, depending on the language used for each exercise (All C++ solutions are duplicated in the `src/` folder under Rust implementation). Each file is named after the problem, so it is easy to match the code with the corresponding assignment.
 
 ## Where to find the reports
 
